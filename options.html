@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ITSM Banner Toggle Options</title>
+  <!-- popup.css holds the shared colours and controls; options.css lays out the page. -->
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body class="options">
+  <header>
+    <h1>ITSM Banner Toggle Options</h1>
+  </header>
+
+  <section>
+    <h2>Sites</h2>
+    <p class="hint">ServiceNow sites to hide banners on. Your browser asks you to allow each one.
+      If a site's address changes, add the new one and remove the old.</p>
+    <div class="site-grid">
+      <form id="addSite" class="site-add">
+        <input id="siteUrl" type="text" spellcheck="false" placeholder="yoursite.service-now.com"
+               aria-label="Site address">
+      </form>
+      <button type="submit" form="addSite" class="secondary"><span aria-hidden="true">+</span> Add site</button>
+
+      <select id="sites" multiple size="8" aria-label="Sites"></select>
+      <button id="removeSites" class="secondary" disabled><span aria-hidden="true">−</span> Remove selected</button>
+    </div>
+    <p id="siteMsg" class="hint" hidden></p>
+  </section>
+
+  <section>
+    <h2>Keyboard shortcut</h2>
+    <p class="hint">Hides or shows the banners without opening the popup.</p>
+    <div class="row shortcut-row">
+      <span>Hide/show banners: <kbd id="shortcut">Not set</kbd></span>
+      <button id="changeShortcut" class="secondary">Change shortcut</button>
+    </div>
+    <p class="hint">On the browser's shortcuts page, set the <b>Hide or show the banners</b> row.
+      The <b>Activate the extension</b> row is the browser's own shortcut for opening the popup.
+      Edge doesn't assign a key on its own, so set one there once.</p>
+  </section>
+
+  <section>
+    <h2>Advanced</h2>
+    <p class="hint">Extra CSS selectors to hide, one per line. Only needed if a banner isn't caught
+      automatically. To find one, right-click the banner and choose <b>Inspect</b>.</p>
+    <textarea id="customSelectors" rows="5" spellcheck="false" placeholder=".my-banner-class"
+              aria-label="Extra CSS selectors"></textarea>
+    <div class="row save-row">
+      <button id="save">Save</button>
+      <span id="saved" class="hint" hidden>Saved.</span>
+    </div>
+  </section>
+
+  <script src="sites.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

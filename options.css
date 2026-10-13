@@ -1,0 +1,68 @@
+/* Options page layout. Colours and controls come from popup.css. */
+
+:root {
+  --field: #f6f8fa;
+  --raised: #eef1f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --field: #161a1f;
+    --raised: #3a3f46;
+  }
+}
+
+body.options {
+  width: auto;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  font-size: 14px;
+}
+
+.options h1 { font-size: 20px; margin-bottom: 20px; }
+.options h2 { font-size: 15px; margin: 0 0 4px; }
+
+.options section {
+  border-top: 1px solid var(--border);
+  padding: 16px 0;
+}
+
+.options .hint { margin: 4px 0 10px; }
+
+/* Sites: address box and list on the left, their buttons on the right. */
+.site-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 12px;
+  align-items: start;
+}
+.site-add { margin: 0; }
+.site-grid input,
+.site-grid select {
+  width: 100%; box-sizing: border-box;
+  font: 14px "Segoe UI", system-ui, sans-serif;
+  background: var(--field); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 4px;
+}
+.site-grid input { padding: 7px 9px; }
+.site-grid select { padding: 2px 0; }
+.site-grid option { padding: 2px 8px; }
+.site-grid option:disabled { color: var(--muted); }
+.site-grid input:focus-visible,
+.site-grid select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+button.secondary {
+  margin: 0; padding: 7px 14px;
+  font: 600 14px "Segoe UI", system-ui, sans-serif;
+  background: var(--raised); color: var(--fg);
+  white-space: nowrap;
+  justify-self: start;
+}
+button.secondary:hover:not(:disabled) { border-color: var(--muted); }
+button.secondary:disabled { opacity: .5; cursor: default; }
+button.secondary span { display: inline-block; width: 1em; }
+
+.shortcut-row { gap: 12px; margin: 6px 0; }
+
+.save-row { justify-content: flex-start; gap: 10px; }
+.save-row button { margin-top: 0; }

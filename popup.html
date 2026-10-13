@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ITSM Banner Toggle</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="row">
+    <h1>ITSM Banners</h1>
+    <button id="openOptions" class="icon-button" title="Options" aria-label="Options">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="currentColor" d="M19.14 12.94a7.07 7.07 0 0 0 .05-.94 7.07 7.07 0 0 0-.05-.94l2.03-1.58a.49.49 0 0 0 .12-.62l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54A.48.48 0 0 0 13.93 2h-3.86a.48.48 0 0 0-.48.41l-.36 2.54c-.58.23-1.13.55-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.71 8.47a.48.48 0 0 0 .12.62l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.49.49 0 0 0-.12.62l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.49.39 1.04.71 1.62.94l.36 2.54c.04.24.25.41.48.41h3.86c.24 0 .44-.17.48-.41l.36-2.54c.58-.23 1.13-.55 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.62l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Z"/>
+      </svg>
+    </button>
+  </header>
+
+  <label class="row toggle">
+    <span>Hide banners</span>
+    <input type="checkbox" id="hidden" role="switch">
+    <span class="switch" aria-hidden="true"></span>
+  </label>
+
+  <label class="check">
+    <input type="checkbox" id="showNew">
+    <span>Show new announcements</span>
+  </label>
+
+  <div class="row status-row">
+    <p id="status" class="status"></p>
+    <button id="hideNew" hidden>Hide</button>
+    <button id="enableSite" hidden>Turn on here</button>
+  </div>
+  <p id="siteMsg" class="hint" hidden></p>
+
+  <footer>
+    <div id="version" class="version"></div>
+  </footer>
+
+  <script src="sites.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
