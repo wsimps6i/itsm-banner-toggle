@@ -61,7 +61,15 @@ Hides or shows the announcement banners on ServiceNow sites that the user adds.
 | `storage` | Saves the user's settings (whether banners are hidden, whether new announcements are shown, custom selectors) and remembers which banners the user has already hidden. |
 | `scripting` | Starts the banner-hiding script on the ServiceNow sites the user adds, since no site is built in. |
 | `activeTab` | Lets the popup see which site the current tab is on, so it can offer "Turn on here" for that site. |
-| Host permissions (`https://*/*`, optional) | Users choose their own ServiceNow sites, whose addresses differ between companies (including custom domains), so the sites can't be listed in advance. The permission is optional and nothing is granted at install: the extension requests access for one site at a time, only when the user adds it, and only runs on those sites. |
+
+The dashboard has no justification box for the optional host permissions (`https://*/*`),
+since nothing is granted at install. If a reviewer asks about site access, this is the
+answer:
+
+> Users choose their own ServiceNow sites, whose addresses differ between companies
+> (including custom domains), so the sites can't be listed in advance. The permission is
+> optional and nothing is granted at install: the extension requests access for one site at
+> a time, only when the user adds it, and only runs on those sites.
 
 **Are you using remote code?** No, I am not using remote code.
 
