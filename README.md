@@ -99,3 +99,6 @@ one per line. To find the selector, right-click the banner and choose **Inspect*
 | `icons/` | Toolbar icons. |
 | `docs/images/` | Screenshots used in this README. |
 | `docs/capture-screenshots.mjs` | Regenerates those screenshots from a throwaway headless Chrome profile with the extension loaded: `node docs/capture-screenshots.mjs <output folder>`. |
+| `PRIVACY.md` | Privacy policy (also linked from the Chrome Web Store listing). |
+| `scripts/package.ps1` | Builds `dist\ITSM-Banner-Toggle-<version>.zip` (release, with docs) and `-store.zip` (Chrome Web Store, extension files only): `pwsh scripts/package.ps1`. |
+| `docs/store/` | Chrome Web Store listing text and permission justifications (`listing.md`), and the store images, rebuilt with `pwsh docs/store/make-store-images.ps1`. |

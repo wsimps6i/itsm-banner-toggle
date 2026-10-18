@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- Chrome Web Store images, built from the README screenshots in ../images.
+     Rendered by make-store-images.ps1: ?shot=popup|turnon|options at 1280x800, ?shot=tile at 440x280. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Store image</title>
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    display: grid; grid-template-columns: 470px 1fr; align-items: center;
+    background: radial-gradient(circle at 75% 40%, #2b3440 0%, #171b21 70%);
+    color: #e6edf3; font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  .text { padding-left: 80px; }
+  .name { display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 600; color: #9198a1; }
+  .name img { width: 40px; height: 40px; }
+  h1 { font-size: 44px; line-height: 1.15; margin: 28px 0 18px; }
+  p { font-size: 21px; line-height: 1.5; color: #b7bfc8; margin: 0; }
+  .shot { display: flex; justify-content: center; }
+  .frame {
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .55), 0 0 0 1px #3d444d;
+  }
+  .frame img { display: block; }
+
+  /* 440x280 promo tile */
+  body.tile {
+    width: 440px; height: 280px; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; gap: 14px; text-align: center;
+  }
+  .tile img { width: 72px; height: 72px; }
+  .tile h1 { font-size: 30px; margin: 0; }
+  .tile p { font-size: 16px; margin: 0 24px; }
+</style>
+</head>
+<body>
+<script>
+  const shots = {
+    popup: {
+      title: 'Hide ServiceNow banners with one switch',
+      text: 'Upgrade and hotfix notices stay out of the way. The badge shows how many are hidden, and new announcements still show up until you hide them.',
+      img: '../images/popup.png', width: 558, crop: null,
+    },
+    turnon: {
+      title: 'Choose which sites it runs on',
+      text: 'Open your ServiceNow site and click Turn on here. Your browser asks you to allow each site, and nothing else is touched.',
+      img: '../images/popup-turn-on.png', width: 558, crop: null,
+    },
+    options: {
+      title: 'Manage sites and shortcuts in Options',
+      text: 'Add or remove ServiceNow sites, set a keyboard shortcut to hide or show banners, and add custom selectors if you need them.',
+      // The Options page centres its content; frame just the content column.
+      img: '../images/options.png', width: 790, crop: 640, frameWidth: 620, offsetX: -84,
+    },
+  };
+  const key = new URLSearchParams(location.search).get('shot') || 'popup';
+  const icon = '../../icons/icon128.png';
+
+  if (key === 'tile') {
+    document.body.className = 'tile';
+    document.body.innerHTML = `<img src="${icon}" alt=""><h1>ITSM Banner Toggle</h1>
+      <p>Hide or show ServiceNow announcement banners</p>`;
+  } else {
+    const s = shots[key];
+    document.body.innerHTML = `
+      <div class="text">
+        <div class="name"><img src="${icon}" alt="">ITSM Banner Toggle</div>
+        <h1>${s.title}</h1>
+        <p>${s.text}</p>
+      </div>
+      <div class="shot"><div class="frame" style="${s.crop ? `height:${s.crop}px;` : ''}${s.frameWidth ? `width:${s.frameWidth}px;` : ''}">
+        <img src="${s.img}" style="width:${s.width}px;${s.offsetX ? `margin-left:${s.offsetX}px;` : ''}" alt="">
+      </div></div>`;
+  }
+</script>
+</body>
+</html>
