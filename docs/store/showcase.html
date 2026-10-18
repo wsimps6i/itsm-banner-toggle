@@ -1,6 +1,7 @@
 <!doctype html>
 <!-- Chrome Web Store images, built from the README screenshots in ../images.
-     Rendered by make-store-images.ps1: ?shot=popup|turnon|options at 1280x800, ?shot=tile at 440x280. -->
+     Rendered by make-store-images.ps1: ?shot=popup|turnon|options at 1280x800, ?shot=tile at 440x280,
+     ?shot=marquee at 1400x560. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -33,6 +34,11 @@
   .tile img { width: 72px; height: 72px; }
   .tile h1 { font-size: 30px; margin: 0; }
   .tile p { font-size: 16px; margin: 0 24px; }
+
+  /* 1400x560 marquee promo tile */
+  body.marquee { width: 1400px; height: 560px; grid-template-columns: 640px 1fr; }
+  .marquee .text { padding-left: 110px; }
+  .marquee h1 { font-size: 50px; }
 </style>
 </head>
 <body>
@@ -58,7 +64,16 @@
   const key = new URLSearchParams(location.search).get('shot') || 'popup';
   const icon = '../../icons/icon128.png';
 
-  if (key === 'tile') {
+  if (key === 'marquee') {
+    document.body.className = 'marquee';
+    document.body.innerHTML = `
+      <div class="text">
+        <div class="name"><img src="${icon}" alt="">ITSM Banner Toggle</div>
+        <h1>Hide ServiceNow banners with one switch</h1>
+        <p>New announcements still show up until you hide them.</p>
+      </div>
+      <div class="shot"><div class="frame"><img src="../images/popup.png" style="width:558px" alt=""></div></div>`;
+  } else if (key === 'tile') {
     document.body.className = 'tile';
     document.body.innerHTML = `<img src="${icon}" alt=""><h1>ITSM Banner Toggle</h1>
       <p>Hide or show ServiceNow announcement banners</p>`;

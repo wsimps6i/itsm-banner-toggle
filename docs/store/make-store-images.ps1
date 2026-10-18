@@ -3,9 +3,9 @@
     Renders the Chrome Web Store images from showcase.html.
 
 .DESCRIPTION
-    Uses headless Chrome with a throwaway profile to render three 1280x800 screenshots
-    and the 440x280 promo tile, then re-saves each one as a 24-bit PNG (no alpha
-    channel), which is what the Chrome Web Store accepts.
+    Uses headless Chrome with a throwaway profile to render three 1280x800 screenshots,
+    the 440x280 small promo tile and the 1400x560 marquee tile, then re-saves each one as a
+    24-bit PNG (no alpha channel), which is what the Chrome Web Store accepts.
 
     The screenshots are built from docs/images, so run docs/capture-screenshots.mjs
     first if the extension's UI has changed.
@@ -14,7 +14,7 @@
     pwsh docs/store/make-store-images.ps1
 
 .NOTES
-    Version 1.0
+    Version 1.1
 #>
 [CmdletBinding()]
 param(
@@ -35,6 +35,7 @@ $images = @(
     @{ Shot = 'turnon';  Width = 1280; Height = 800; File = '2-turn-on.png' }
     @{ Shot = 'options'; Width = 1280; Height = 800; File = '3-options.png' }
     @{ Shot = 'tile';    Width = 440;  Height = 280; File = 'promo-tile-440x280.png' }
+    @{ Shot = 'marquee'; Width = 1400; Height = 560; File = 'marquee-1400x560.png' }
 )
 
 foreach ($img in $images) {

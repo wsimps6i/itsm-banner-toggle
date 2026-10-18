@@ -39,6 +39,9 @@ Not affiliated with or endorsed by ServiceNow.
 
 **Small promo tile (440×280):** `images/promo-tile-440x280.png`
 
+**Marquee promo tile (1400×560, optional):** `images/marquee-1400x560.png`. Only shown if
+Google features the extension, which doesn't happen to unlisted ones, so it can be left empty.
+
 **Homepage URL:** https://github.com/wsimps6i/itsm-banner-toggle
 
 **Support URL:** https://github.com/wsimps6i/itsm-banner-toggle/issues
