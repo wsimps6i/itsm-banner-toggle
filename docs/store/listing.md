@@ -1,5 +1,13 @@
 # Chrome Web Store listing
 
+Published (Unlisted) as item `hdnpgeaplpbldjgfpijfomcjlhbdcfoo`:
+https://chromewebstore.google.com/detail/itsm-banner-toggle/hdnpgeaplpbldjgfpijfomcjlhbdcfoo
+
+**Releasing an update:** bump `version` in `manifest.json`, run `pwsh scripts/package.ps1`,
+then in the Developer Dashboard open the item, go to **Package**, upload the new
+`-store.zip` and submit for review. Users get it automatically once it's approved. Also
+attach the non-store zip to a GitHub release as usual.
+
 Copy and paste these into the Chrome Web Store Developer Dashboard. Images are in
 [`images/`](images/) (rebuild them with `make-store-images.ps1`), and the zip to upload comes
 from `scripts/package.ps1` (`dist\ITSM-Banner-Toggle-<version>-store.zip`).

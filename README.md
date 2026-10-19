@@ -5,7 +5,47 @@ ServiceNow ITSM sites, such as notices about upcoming upgrades, hotfixes and cha
 freezes. Click the toolbar icon and use the switch. No site is built in: you choose which
 ServiceNow sites it runs on, such as `yourcompany.service-now.com`.
 
-## Install (unpacked)
+**[Get it from the Chrome Web Store](https://chromewebstore.google.com/detail/itsm-banner-toggle/hdnpgeaplpbldjgfpijfomcjlhbdcfoo)** (works in Chrome and Edge).
+
+## Install from the Chrome Web Store
+
+The easiest way: no Developer mode, and updates install automatically.
+
+1. **Add it.** Open the [ITSM Banner Toggle store page](https://chromewebstore.google.com/detail/itsm-banner-toggle/hdnpgeaplpbldjgfpijfomcjlhbdcfoo) and click
+   **Add to Chrome**. In Edge, first click **Allow extensions from other stores** in the bar at
+   the top of the page, then **Add to Chrome**. Then click the puzzle-piece icon in the
+   toolbar and pin the extension so the switch is one click away.
+
+2. **Turn it on for your ServiceNow site.** Open the site, click the extension's icon, click
+   **Turn on here**, and allow access when the browser asks. Banners already on the page are
+   hidden straight away. Do the same for any other ServiceNow site you use.
+
+   <img src="docs/images/popup-turn-on.png" width="372"
+        alt="Popup on a site that isn't turned on yet, with a Turn on here button">
+
+Settings are stored in `chrome.storage.sync`, so they follow your browser profile. Banners
+are hidden by default.
+
+If your browser is managed by your organisation and the store page won't let you add it,
+your IT team may need to allow the extension ID `hdnpgeaplpbldjgfpijfomcjlhbdcfoo`.
+
+### Switching from the unpacked version
+
+The store version is a separate install with its own settings, so:
+
+1. **Remove the unpacked copy first.** On `chrome://extensions` (or `edge://extensions`),
+   click **Remove** on the old **ITSM Banner Toggle** card. Otherwise both copies run.
+2. Install from the store as above, and click **Turn on here** on each of your ServiceNow
+   sites again.
+3. Set the keyboard shortcut again if you'd changed it (in Edge you always need to set one).
+   See **Keyboard shortcut** on the Options page.
+
+The list of banners you've already hidden starts fresh, but banners already on screen when
+you turn a site on are treated as hidden, so nothing reappears.
+
+## Install unpacked (alternative)
+
+For testing a version that isn't in the store yet, or if your browser blocks store installs.
 
 1. **Get the files.** Download the zip from the latest
    [release](https://github.com/wsimps6i/itsm-banner-toggle/releases/latest) and extract it
@@ -20,18 +60,8 @@ ServiceNow sites it runs on, such as `yourcompany.service-now.com`.
    <img src="docs/images/chrome-extensions-page.png" width="825"
         alt="Chrome extensions page with Developer mode switched on and Load unpacked highlighted, with the ITSM Banner Toggle card below">
 
-   The **ITSM Banner Toggle** card appears once it's loaded. Click the puzzle-piece icon in
-   the toolbar and pin the extension so the switch is one click away.
-
-3. **Turn it on for your ServiceNow site.** Open the site, click the extension's icon, click
-   **Turn on here**, and allow access when the browser asks. Banners already on the page are
-   hidden straight away. Do the same for any other ServiceNow site you use.
-
-   <img src="docs/images/popup-turn-on.png" width="372"
-        alt="Popup on a site that isn't turned on yet, with a Turn on here button">
-
-Settings are stored in `chrome.storage.sync`, so they follow your browser profile. Banners
-are hidden by default.
+   The **ITSM Banner Toggle** card appears once it's loaded. Pin it from the puzzle-piece
+   icon, then turn it on for your ServiceNow site as in step 2 of the store install.
 
 To update, extract the new zip over the same folder, then click the reload icon on the
 extension's card on the extensions page.
