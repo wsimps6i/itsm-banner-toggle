@@ -60,15 +60,15 @@ document.getElementById('addSite').addEventListener('submit', async (e) => {
 
 // Keeps the list current, including sites added or removed from the popup
 // while this page is open.
-chrome.permissions.onAdded.addListener(renderSites);
-chrome.permissions.onRemoved.addListener(renderSites);
+ext.permissions.onAdded.addListener(renderSites);
+ext.permissions.onRemoved.addListener(renderSites);
 
-chrome.storage.sync.get({ customSelectors: '' }, (s) => {
+ext.storage.sync.get({ customSelectors: '' }).then((s) => {
   selectors.value = s.customSelectors;
 });
 
 document.getElementById('save').addEventListener('click', () => {
-  chrome.storage.sync.set({ customSelectors: selectors.value }, () => {
+  ext.storage.sync.set({ customSelectors: selectors.value }).then(() => {
     saved.hidden = false;
     setTimeout(() => (saved.hidden = true), 2000);
   });
@@ -77,15 +77,20 @@ document.getElementById('save').addEventListener('click', () => {
 // Shows the current keyboard shortcut. It's changed on the browser's own
 // shortcuts page, so look again whenever the user comes back to this tab.
 function renderShortcut() {
-  chrome.commands.getAll((commands) => {
+  ext.commands.getAll().then((commands) => {
     const cmd = commands.find((c) => c.name === 'toggle-banners');
     document.getElementById('shortcut').textContent = cmd?.shortcut || 'Not set';
   });
 }
 
+// Firefox opens its own shortcut settings; Chrome and Edge have a shortcuts page.
 document.getElementById('changeShortcut').addEventListener('click', () => {
+  if (ext.commands.openShortcutSettings) {
+    ext.commands.openShortcutSettings();
+    return;
+  }
   const isEdge = navigator.userAgent.includes('Edg/');
-  chrome.tabs.create({ url: isEdge ? 'edge://extensions/shortcuts' : 'chrome://extensions/shortcuts' });
+  ext.tabs.create({ url: isEdge ? 'edge://extensions/shortcuts' : 'chrome://extensions/shortcuts' });
 });
 
 document.addEventListener('visibilitychange', () => {

@@ -1,5 +1,10 @@
-// ITSM Banner Toggle - background service worker.
-// Keeps the toolbar badge in step with each tab and handles the keyboard shortcut.
+// ITSM Banner Toggle - background script. A service worker in Chrome and Edge, an
+// event page in Firefox. Keeps the toolbar badge in step with each tab, handles the
+// keyboard shortcut, and starts the content script on the sites the user has added.
+
+// The extension API: `browser` in Firefox (and Chrome/Edge 148+), `chrome` in older
+// Chrome and Edge. All calls use promises, which both support.
+const ext = globalThis.browser ?? chrome;
 
 const BADGE = {
   off: { text: 'OFF', color: '#6e7781' },
@@ -7,7 +12,7 @@ const BADGE = {
   hidden: { color: '#1f6feb' },
 };
 
-chrome.runtime.onMessage.addListener((msg, sender) => {
+ext.runtime.onMessage.addListener((msg, sender) => {
   if (msg?.type !== 'itsm-banner-state' || !sender.tab || sender.frameId !== 0) return;
   let badge;
   if (!msg.hidden) badge = BADGE.off;
@@ -15,15 +20,15 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
   else badge = { text: msg.hiddenCount ? String(msg.hiddenCount) : '', color: BADGE.hidden.color };
 
   const tabId = sender.tab.id;
-  chrome.action.setBadgeText({ tabId, text: badge.text });
-  chrome.action.setBadgeBackgroundColor({ tabId, color: badge.color });
-  chrome.action.setBadgeTextColor?.({ tabId, color: '#ffffff' });
+  ext.action.setBadgeText({ tabId, text: badge.text });
+  ext.action.setBadgeBackgroundColor({ tabId, color: badge.color });
+  ext.action.setBadgeTextColor?.({ tabId, color: '#ffffff' });
 });
 
-chrome.commands.onCommand.addListener(async (command) => {
+ext.commands.onCommand.addListener(async (command) => {
   if (command !== 'toggle-banners') return;
-  const { hidden } = await chrome.storage.sync.get({ hidden: true });
-  await chrome.storage.sync.set({ hidden: !hidden });
+  const { hidden } = await ext.storage.sync.get({ hidden: true });
+  await ext.storage.sync.set({ hidden: !hidden });
 });
 
 // --- Sites -------------------------------------------------------------------
@@ -34,11 +39,11 @@ chrome.commands.onCommand.addListener(async (command) => {
 const SCRIPT_ID = 'extra-sites';
 
 async function registerSites() {
-  const { origins: matches = [] } = await chrome.permissions.getAll();
-  const existing = await chrome.scripting.getRegisteredContentScripts({ ids: [SCRIPT_ID] });
-  if (existing.length) await chrome.scripting.unregisterContentScripts({ ids: [SCRIPT_ID] });
+  const { origins: matches = [] } = await ext.permissions.getAll();
+  const existing = await ext.scripting.getRegisteredContentScripts({ ids: [SCRIPT_ID] });
+  if (existing.length) await ext.scripting.unregisterContentScripts({ ids: [SCRIPT_ID] });
   if (!matches.length) return;
-  await chrome.scripting.registerContentScripts([{
+  await ext.scripting.registerContentScripts([{
     id: SCRIPT_ID,
     matches,
     js: ['content.js'],
@@ -55,9 +60,9 @@ function syncSites() {
 }
 
 async function injectIntoOpenTabs(origins) {
-  const tabs = await chrome.tabs.query({ url: origins });
+  const tabs = await ext.tabs.query({ url: origins });
   for (const tab of tabs) {
-    chrome.scripting
+    ext.scripting
       .executeScript({ target: { tabId: tab.id, allFrames: true }, files: ['content.js'] })
       .catch(() => {}); // e.g. the tab is still loading; the registered script covers it.
   }
@@ -70,19 +75,19 @@ const SEED_WINDOW_MS = 30000;
 
 async function markNewSites(origins) {
   const now = Date.now();
-  const { seedSites = {} } = await chrome.storage.local.get('seedSites');
+  const { seedSites = {} } = await ext.storage.local.get('seedSites');
   for (const [pattern, until] of Object.entries(seedSites)) {
     if (until < now) delete seedSites[pattern];
   }
   for (const pattern of origins) seedSites[pattern] = now + SEED_WINDOW_MS;
-  await chrome.storage.local.set({ seedSites });
+  await ext.storage.local.set({ seedSites });
 }
 
-chrome.permissions.onAdded.addListener(async ({ origins = [] }) => {
+ext.permissions.onAdded.addListener(async ({ origins = [] }) => {
   if (origins.length) await markNewSites(origins);
   await syncSites();
   if (origins.length) injectIntoOpenTabs(origins);
 });
-chrome.permissions.onRemoved.addListener(syncSites);
-chrome.runtime.onInstalled.addListener(syncSites);
-chrome.runtime.onStartup.addListener(syncSites);
+ext.permissions.onRemoved.addListener(syncSites);
+ext.runtime.onInstalled.addListener(syncSites);
+ext.runtime.onStartup.addListener(syncSites);

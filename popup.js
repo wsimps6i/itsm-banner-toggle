@@ -7,22 +7,22 @@ const siteMsg = document.getElementById('siteMsg');
 
 // The active tab, looked up once. activeTab lets the popup see its address.
 let currentTab = null;
-const tabReady = chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+const tabReady = ext.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
   currentTab = tab || null;
 });
 
-chrome.storage.sync.get({ hidden: true, showNew: true }, (s) => {
+ext.storage.sync.get({ hidden: true, showNew: true }).then((s) => {
   toggle.checked = s.hidden;
   showNew.checked = s.showNew;
   refreshStatus();
 });
 
 toggle.addEventListener('change', () => {
-  chrome.storage.sync.set({ hidden: toggle.checked }, () => setTimeout(refreshStatus, 200));
+  ext.storage.sync.set({ hidden: toggle.checked }).then(() => setTimeout(refreshStatus, 200));
 });
 
 showNew.addEventListener('change', () => {
-  chrome.storage.sync.set({ showNew: showNew.checked }, () => setTimeout(refreshStatus, 200));
+  ext.storage.sync.set({ showNew: showNew.checked }).then(() => setTimeout(refreshStatus, 200));
 });
 
 hideNew.addEventListener('click', async () => {
@@ -30,7 +30,7 @@ hideNew.addEventListener('click', async () => {
 });
 
 document.getElementById('openOptions').addEventListener('click', () => {
-  chrome.runtime.openOptionsPage();
+  ext.runtime.openOptionsPage();
   window.close();
 });
 
@@ -38,7 +38,7 @@ async function sendToPage(type) {
   await tabReady;
   if (!currentTab) return null;
   try {
-    return await chrome.tabs.sendMessage(currentTab.id, { type }, { frameId: 0 });
+    return await ext.tabs.sendMessage(currentTab.id, { type }, { frameId: 0 });
   } catch {
     return null; // Not a site the extension runs on, or the page loaded before it was turned on.
   }
@@ -96,4 +96,4 @@ enableSite.addEventListener('click', async () => {
   if (granted) setTimeout(refreshStatus, 600);
 });
 
-document.getElementById('version').textContent = `Version ${chrome.runtime.getManifest().version}`;
+document.getElementById('version').textContent = `Version ${ext.runtime.getManifest().version}`;

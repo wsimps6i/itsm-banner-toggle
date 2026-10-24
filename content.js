@@ -10,6 +10,10 @@
   if (window.__itsmBannerToggle) return;
   window.__itsmBannerToggle = true;
 
+  // The extension API: `browser` in Firefox (and Chrome/Edge 148+), `chrome` in older
+  // Chrome and Edge. All calls use promises, which both support.
+  const ext = globalThis.browser ?? chrome;
+
   const MARK = 'data-itsm-banner-toggle';
   // Anything whose tag, id or class mentions "announcement" is treated as a banner.
   const PATTERN = /announcement/i;
@@ -207,7 +211,7 @@
   function saveSeen() {
     const list = [...seen].slice(-MAX_SEEN);
     seen = new Set(list);
-    chrome.storage.local.set({ seen: list });
+    ext.storage.local.set({ seen: list });
   }
 
   // Tells the background worker the state, for the toolbar badge.
@@ -217,7 +221,7 @@
     const key = JSON.stringify(state);
     if (key === lastReport) return;
     lastReport = key;
-    chrome.runtime.sendMessage(state, () => void chrome.runtime.lastError);
+    ext.runtime.sendMessage(state).catch(() => {}); // e.g. the background is restarting
   }
 
   function parseSelectors(text) {
@@ -228,23 +232,24 @@
   }
 
   function loadSettings() {
-    chrome.storage.sync.get({ hidden: true, showNew: true, customSelectors: '' }, (s) => {
-      chrome.storage.local.get(['seen', 'seedSites'], (l) => {
-        hidden = s.hidden;
-        showNew = s.showNew;
-        customSelectors = parseSelectors(s.customSelectors);
-        if (Array.isArray(l.seen)) seen = new Set(l.seen);
-        else seedUntil = Date.now() + SEED_WINDOW_MS;
-        // A site just added from the popup: its current banners count as seen.
-        const siteSeed = (l.seedSites || {})[`${location.origin}/*`] || 0;
-        seedUntil = Math.max(seedUntil, siteSeed);
-        settingsLoaded = true;
-        scan();
-      });
+    Promise.all([
+      ext.storage.sync.get({ hidden: true, showNew: true, customSelectors: '' }),
+      ext.storage.local.get(['seen', 'seedSites']),
+    ]).then(([s, l]) => {
+      hidden = s.hidden;
+      showNew = s.showNew;
+      customSelectors = parseSelectors(s.customSelectors);
+      if (Array.isArray(l.seen)) seen = new Set(l.seen);
+      else seedUntil = Date.now() + SEED_WINDOW_MS;
+      // A site just added from the popup: its current banners count as seen.
+      const siteSeed = (l.seedSites || {})[`${location.origin}/*`] || 0;
+      seedUntil = Math.max(seedUntil, siteSeed);
+      settingsLoaded = true;
+      scan();
     });
   }
 
-  chrome.storage.onChanged.addListener((changes, area) => {
+  ext.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.seen) {
       seen = new Set(changes.seen.newValue || []);
       scan();
@@ -265,7 +270,7 @@
   });
 
   // The popup asks for the current state, or asks to hide new banners.
-  chrome.runtime.onMessage.addListener((msg, _sender, reply) => {
+  ext.runtime.onMessage.addListener((msg, _sender, reply) => {
     if (msg?.type === 'itsm-banner-status') scan();
     else if (msg?.type === 'itsm-banner-ack') ack();
     else return;
@@ -278,7 +283,7 @@
   // picked up by a slow safety-net scan. This also confirms new banners' text.
   const timer = setInterval(() => {
     // After the extension is reloaded or updated, this copy of the script is orphaned.
-    if (!chrome.runtime?.id) {
+    if (!ext.runtime?.id) {
       clearInterval(timer);
       observer.disconnect();
       return;

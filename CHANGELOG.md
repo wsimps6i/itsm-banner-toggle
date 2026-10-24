@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 - 2026-10-24
+
+- Works in Firefox (140 and later) as well as Chrome and Edge, from the same code. The
+  manifest lists both background formats (Chrome and Edge use the service worker, Firefox
+  the background script) and declares Firefox's add-on ID and that no data is collected.
+- All extension API calls now use promises and the standard `browser` API where the
+  browser has it, falling back to `chrome`.
+- **Change shortcut** on the Options page opens Firefox's own shortcut settings in Firefox.
+
 ## 1.3.1 - 2026-10-10
 
 - The hide/show keyboard shortcut has moved from the popup footer to its own **Keyboard
