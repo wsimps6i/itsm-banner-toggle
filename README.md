@@ -1,11 +1,12 @@
 # ITSM Banner Toggle
 
-A Chrome / Edge extension (Manifest V3) that shows or hides the announcement banners on
+A Chrome, Edge and Firefox extension (Manifest V3) that shows or hides the announcement banners on
 ServiceNow ITSM sites, such as notices about upcoming upgrades, hotfixes and change
 freezes. Click the toolbar icon and use the switch. No site is built in: you choose which
 ServiceNow sites it runs on, such as `yourcompany.service-now.com`.
 
-**[Get it from the Chrome Web Store](https://chromewebstore.google.com/detail/itsm-banner-toggle/hdnpgeaplpbldjgfpijfomcjlhbdcfoo)** (works in Chrome and Edge).
+**[Get it from the Chrome Web Store](https://chromewebstore.google.com/detail/itsm-banner-toggle/hdnpgeaplpbldjgfpijfomcjlhbdcfoo)** (Chrome and Edge)
+· **[Firefox version](#install-in-firefox)** (signed by Mozilla, Firefox 140 or later)
 
 ## Install from the Chrome Web Store
 
@@ -42,6 +43,21 @@ The store version is a separate install with its own settings, so:
 
 The list of banners you've already hidden starts fresh, but banners already on screen when
 you turn a site on are treated as hidden, so nothing reappears.
+
+## Install in Firefox
+
+1. **Add it.** In Firefox, open the
+   [latest release](https://github.com/wsimps6i/itsm-banner-toggle/releases/latest) and click
+   `itsm-banner-toggle-<version>.xpi`. Firefox asks whether to add **ITSM Banner Toggle**;
+   click **Add**. (If it downloads the file instead, open the downloaded file in Firefox.)
+2. **Pin it.** Click the puzzle-piece icon in the toolbar, then the gear next to **ITSM Banner
+   Toggle**, then **Pin to Toolbar**.
+3. **Turn it on for your ServiceNow site**, as in step 2 of the Chrome Web Store install. Firefox may close the popup
+   when it shows its permission prompt; click **Allow** and the banners are hidden.
+
+Firefox checks for updates once a day and installs new versions by itself. The keyboard
+shortcut is **Alt+Shift+B**, and **Change shortcut** on the Options page opens Firefox's
+shortcut settings.
 
 ## Install unpacked (alternative)
 
@@ -131,4 +147,6 @@ one per line. To find the selector, right-click the banner and choose **Inspect*
 | `docs/capture-screenshots.mjs` | Regenerates those screenshots from a throwaway headless Chrome profile with the extension loaded: `node docs/capture-screenshots.mjs <output folder>`. |
 | `PRIVACY.md` | Privacy policy (also linked from the Chrome Web Store listing). |
 | `scripts/package.ps1` | Builds `dist\ITSM-Banner-Toggle-<version>.zip` (release, with docs) and `-store.zip` (Chrome Web Store, extension files only): `pwsh scripts/package.ps1`. |
+| `updates.json` | Firefox update manifest. Firefox reads it daily (from `main`) to find new signed versions. |
+| `RELEASING.md` | Release checklist for GitHub, the Chrome Web Store and Firefox. |
 | `docs/store/` | Chrome Web Store listing text and permission justifications (`listing.md`), and the store images, rebuilt with `pwsh docs/store/make-store-images.ps1`. |
