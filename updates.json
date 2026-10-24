@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "itsm-banner-toggle@wsimps6i": {
+      "updates": [
+        {
+          "version": "1.4.0",
+          "update_link": "https://github.com/wsimps6i/itsm-banner-toggle/releases/download/v1.4.0/itsm-banner-toggle-1.4.0.xpi"
+        }
+      ]
+    }
+  }
+}
